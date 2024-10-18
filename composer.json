@@ -15,7 +15,11 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "nikic/fast-route": "^2.0@dev",
-        "supabase/supabase-php": "dev-main"
+        "nikic/fast-route": "^1.3"
+    },
+    "config": {
+        "platform": {
+            "php": "7.3.3"
+        }
     }
 }
