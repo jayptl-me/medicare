@@ -1,0 +1,21 @@
+{
+    "name": "user/medicare",
+    "description": "A medical website",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "User\\Medicare\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jay, Vansh"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "nikic/fast-route": "^2.0@dev",
+        "supabase/supabase-php": "dev-main"
+    }
+}
