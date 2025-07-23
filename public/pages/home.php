@@ -9,82 +9,28 @@ if (!isset($_COOKIE['user_id'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Medicare - Home</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            margin: 0;
-        }
-        .container {
-            display: flex;
-            justify-content: space-around;
-            margin: 40px 0;
-        }
-        .card {
-            background-color: #f1f1f1;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            width: 300px;
-        }
-        .card h2 {
-            margin-top: 0;
-        }
-        .card p {
-            margin-bottom: 20px;
-        }
-        .btn {
-            background-color: #4CAF50;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            cursor: pointer;
-            padding: 10px 20px;
-            text-decoration: none;
-        }
-        .btn:hover {
-            background-color: #45a049;
-        }
-        .logout {
-            background-color: #f44336;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-        .logout:hover {
-            background-color: #d32f2f;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
 </head>
 <body>
-    <header>
-        <h1>Medicare</h1>
-        <a href="/logout" class="btn logout">Logout</a>
-    </header>
-    <div class="container">
-        <div class="card">
-            <h2>Your Schedule</h2>
-            <p>View and manage your upcoming appointments.</p>
-            <a href="/schedule" class="btn">View Schedule</a>
-        </div>
-        <div class="card">
-            <h2>Book an Appointment</h2>
-            <p>Schedule a new appointment with our healthcare providers.</p>
-            <a href="/schedule" class="btn">Book Appointment</a>
-        </div>
+    <?php require_once __DIR__ . '/../components/header.php'; ?>
+    <div class="container" style="max-width:900px;display:flex;gap:24px;flex-wrap:wrap;justify-content:center;">
+        <?php require_once __DIR__ . '/../components/card.php'; ?>
+        <?php require_once __DIR__ . '/../components/button.php'; ?>
+        <?php
+        render_card('Your Schedule',
+            '<p>View and manage your upcoming appointments.</p>' .
+            render_button('View Schedule', 'primary', '/schedule', 'style="margin-top:8px;"')
+        );
+        render_card('Book an Appointment',
+            '<p>Schedule a new appointment with our healthcare providers.</p>' .
+            render_button('Book Appointment', 'secondary', '/schedule', 'style="margin-top:8px;"')
+        );
+        ?>
     </div>
 </body>
 </html>

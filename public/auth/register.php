@@ -84,74 +84,97 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Patient Registration</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 300px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background: #45a049;
-        }
-        .error {
-            color: red;
-            margin-bottom: 10px;
-        }
-        .success {
-            color: green;
-            margin-bottom: 10px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
 </head>
 <body>
+    <?php require_once __DIR__ . '/../components/header.php'; ?>
     <div class="container">
         <h1>Patient Registration</h1>
-        <?php if (!empty($errors)): ?>
-            <?php foreach ($errors as $error): ?>
-                <div class="error"><?= htmlspecialchars($error) ?></div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-        <form action="" method="post">
-            <input type="text" id="name" name="name" placeholder="Name" required>
-            <input type="email" id="email" name="email" placeholder="Email" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-            <input type="tel" id="phone" name="phone" placeholder="Phone (10 digits)" required pattern="[0-9]{10}">
-            <textarea id="address" name="address" placeholder="Address" required></textarea>
-            <input type="submit" value="Register">
-        </form>
+        <?php require_once __DIR__ . '/../components/alert.php'; ?>
+        <?php
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                render_alert($error, 'error');
+            }
+        }
+        ?>
+        <?php require_once __DIR__ . '/../components/form.php'; ?>
+        <?php
+        $fields = [
+            [
+                'label' => 'Name',
+                'type' => 'text',
+                'id' => 'name',
+                'name' => 'name',
+                'placeholder' => 'Name',
+                'required' => true,
+                'value' => $_POST['name'] ?? '',
+                'pattern' => ''
+            ],
+            [
+                'label' => 'Email',
+                'type' => 'email',
+                'id' => 'email',
+                'name' => 'email',
+                'placeholder' => 'Email',
+                'required' => true,
+                'value' => $_POST['email'] ?? '',
+                'pattern' => ''
+            ],
+            [
+                'label' => 'Password',
+                'type' => 'password',
+                'id' => 'password',
+                'name' => 'password',
+                'placeholder' => 'Password',
+                'required' => true,
+                'value' => '',
+                'pattern' => ''
+            ],
+            [
+                'label' => 'Phone',
+                'type' => 'tel',
+                'id' => 'phone',
+                'name' => 'phone',
+                'placeholder' => 'Phone (10 digits)',
+                'required' => true,
+                'value' => $_POST['phone'] ?? '',
+                'pattern' => '[0-9]{10}'
+            ],
+            [
+                'label' => 'Address',
+                'type' => 'textarea',
+                'id' => 'address',
+                'name' => 'address',
+                'placeholder' => 'Address',
+                'required' => true,
+                'value' => $_POST['address'] ?? '',
+                'pattern' => ''
+            ]
+        ];
+        render_form($fields, '', 'post', 'Register');
+        ?>
     </div>
+    <script>
+    // Password visibility toggle (minimal JS)
+    document.addEventListener('DOMContentLoaded', function() {
+      var pwd = document.getElementById('password');
+      if (pwd) {
+        var toggle = document.createElement('span');
+        toggle.textContent = '👁️';
+        toggle.style.cursor = 'pointer';
+        toggle.style.marginLeft = '8px';
+        toggle.onclick = function() {
+          pwd.type = pwd.type === 'password' ? 'text' : 'password';
+        };
+        pwd.parentNode.insertBefore(toggle, pwd.nextSibling);
+      }
+    });
+    </script>
 </body>
 </html>

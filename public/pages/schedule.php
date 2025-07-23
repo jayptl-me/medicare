@@ -88,116 +88,82 @@ if ($httpcode == 200) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Schedule</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            margin: 0;
-            color: #333;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .error {
-            color: red;
-            margin-bottom: 10px;
-        }
-        .success {
-            color: green;
-            margin-bottom: 10px;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input[type="date"], input[type="time"], input[type="text"], input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
 </head>
 <body>
-    <header>
+    <?php require_once __DIR__ . '/../components/header.php'; ?>
+    <div class="container" style="max-width:700px;">
         <h1>Schedule</h1>
-    </header>
-    <div class="container">
-        <h1>Schedule</h1>
-        <?php if (!empty($errors)): ?>
-            <?php foreach ($errors as $error): ?>
-                <div class="error"><?= htmlspecialchars($error) ?></div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-        <?php if ($success): ?>
-            <div class="success">Appointment booked successfully!</div>
-        <?php endif; ?>
-        <form action="" method="post">
-            <input type="date" id="date" name="date" required>
-            <input type="time" id="time" name="time" required>
-            <input type="text" id="provider" name="provider" placeholder="Provider" required>
-            <input type="submit" value="Book Appointment">
-        </form>
-
+        <?php require_once __DIR__ . '/../components/alert.php'; ?>
+        <?php
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                render_alert($error, 'error');
+            }
+        }
+        if ($success) {
+            render_alert('Appointment booked successfully!', 'success');
+        }
+        require_once __DIR__ . '/../components/form.php';
+        $fields = [
+            [
+                'label' => 'Date',
+                'type' => 'date',
+                'id' => 'date',
+                'name' => 'date',
+                'placeholder' => '',
+                'required' => true,
+                'value' => $_POST['date'] ?? '',
+                'pattern' => ''
+            ],
+            [
+                'label' => 'Time',
+                'type' => 'time',
+                'id' => 'time',
+                'name' => 'time',
+                'placeholder' => '',
+                'required' => true,
+                'value' => $_POST['time'] ?? '',
+                'pattern' => ''
+            ],
+            [
+                'label' => 'Provider',
+                'type' => 'text',
+                'id' => 'provider',
+                'name' => 'provider',
+                'placeholder' => 'Provider',
+                'required' => true,
+                'value' => $_POST['provider'] ?? '',
+                'pattern' => ''
+            ]
+        ];
+        render_form($fields, '', 'post', 'Book Appointment');
+        ?>
         <h2>Your Scheduled Appointments</h2>
-        <?php if (!empty($appointments)): ?>
-            <table>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Provider</th>
-                </tr>
-                <?php foreach ($appointments as $appointment): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($appointment['date']) ?></td>
-                        <td><?= htmlspecialchars($appointment['time']) ?></td>
-                        <td><?= htmlspecialchars($appointment['provider']) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        <?php else: ?>
-            <p>You have no appointments scheduled.</p>
-        <?php endif; ?>
+        <?php require_once __DIR__ . '/../components/card.php'; ?>
+        <?php
+        if (!empty($appointments)) {
+            echo '<div style="overflow-x:auto;">';
+            echo '<table style="width:100%;border-collapse:collapse;">';
+            echo '<tr><th>Date</th><th>Time</th><th>Provider</th></tr>';
+            foreach ($appointments as $appointment) {
+                echo '<tr>';
+                echo '<td>' . htmlspecialchars($appointment['date']) . '</td>';
+                echo '<td>' . htmlspecialchars($appointment['time']) . '</td>';
+                echo '<td>' . htmlspecialchars($appointment['provider']) . '</td>';
+                echo '</tr>';
+            }
+            echo '</table>';
+            echo '</div>';
+        } else {
+            render_card('', '<p>You have no appointments scheduled.</p>');
+        }
+        ?>
     </div>
 </body>
 </html>

@@ -1,0 +1,42 @@
+/* main.css - Base styles and layout for Medicare UI Revamp */
+:root {
+    --primary: #4CAF50;
+    --accent: #45a049;
+    --error: #f44336;
+    --background: #f4f4f4;
+    --text: #333;
+    --radius: 8px;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --spacing: 16px;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 480px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: var(--spacing);
+}
+
+h1,
+h2,
+h3 {
+    color: var(--primary);
+    margin-top: 0;
+}
+
+@media (max-width: 600px) {
+    .container {
+        max-width: 98vw;
+        padding: 8px;
+    }
+}
